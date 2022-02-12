@@ -112,21 +112,20 @@ const moviesController = {
             return res.redirect('/movies')})            
         .catch(error => res.send(error))
     },
-    delete: function (req,res) {
-        let movieId = req.params.id;
-        Movies
-        .findByPk(movieId)
-        .then(Movie => {
-            return res.render(path.resolve(__dirname, '..', 'views',  'moviesDelete'), {Movie})})
-        .catch(error => res.send(error))
+    delete: function (req, res) {
+        db.Movie.findByPk(parseInt(req.params.id))
+        .then(Movie=>{
+            res.render("moviesDelete", {Movie})})
+        .catch(error=>{
+            console.log(error)})
     },
-    destroy: function (req,res) {
-        let movieId = req.params.id;
-        Movies
-        .destroy({where: {id: movieId}, force: true}) // force: true es para asegurar que se ejecute la acción
+    destroy: function (req, res) {
+        db.Movie.destroy({
+            where: {id:req.params.id}})
         .then(()=>{
-            return res.redirect('/movies')})
-        .catch(error => res.send(error)) 
+            res.redirect("/movies/")})
+        .catch(error=>{
+            console.log(error)})
     }
 }
 
